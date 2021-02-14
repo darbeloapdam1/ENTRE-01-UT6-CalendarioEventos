@@ -2,10 +2,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-
+import java.time.DayOfWeek;
 /**
  * Representa a un evento del calendario
- * 
+ * @Author - Diego Arbeloa
  */
 public class Evento {
     private String nombre;
@@ -24,10 +24,32 @@ public class Evento {
      */                 
     public Evento(String nombre, String fecha, String horaInicio,
     String horaFin) {
-         
+         this.nombre = formatearNombre(nombre);
+         this.fecha = LocalDate.parse(fecha, formateadorFecha);
+         this.horaInicio = LocalTime.parse(horaInicio);
+         this.horaFin = LocalTime.parse(horaFin);
     }
-
-   
+    
+    /**
+     * 
+     *
+     * @param  nombre   el nombre a formatear
+     * @return   resul  nombre con formato adecuato
+     */
+    private String formatearNombre(String nombre)
+    {
+        String resul = "";
+        String[] nom = nombre.split(" ");
+        for(String pal: nom){
+            if(!pal.equals(" ") && !pal.equals("")){
+                pal.trim();
+                String nom1 = pal.substring(0,1).toUpperCase();
+                String nom2 = pal.substring(1);
+                resul += nom1 + nom2 + " ";                
+            }
+        }        
+        return resul;
+    }
 
     /**
      * accesor para el nombre del evento
@@ -90,7 +112,17 @@ public class Evento {
      * que se obtendrá a partir de la fecha del evento
      */
     public int getDia() {
-        return 0;
+        String dia = fecha.getDayOfWeek().toString();
+        switch(dia){
+            case "MONDAY": return 1;
+            case "TUESDAY": return 2;
+            case "WEDNESDAY": return 3;
+            case "THURSDAY": return 4;
+            case "FRIDAY": return 5;
+            case "SATURDAY": return 6;
+            case "SUNDAY": return 7;
+            default: return 0;
+        }
     }
 
     /**
@@ -98,15 +130,17 @@ public class Evento {
      * que se obtendrá a partir de la fecha del evento
      */
     public Mes getMes() {
-        return null;
+        Mes[] meses = Mes.values();
+        return meses[fecha.getMonthValue()];
     }
 
     /**
      * calcula y devuelve la duración del evento en minutos
      */
     public int getDuracion() {
-        return 0;
-
+        int minutosInicio = (horaInicio.getHour() * 60) + horaInicio.getMinute();
+        int minutosFinal = (horaFin.getHour() * 60) + horaFin.getMinute();
+        return Math.abs(minutosInicio - minutosFinal);
     }
 
     /**
@@ -117,10 +151,10 @@ public class Evento {
      * Pista! usa un objeto LocalDateTime
      */
     public boolean antesDe(Evento otro) {
-        return true;
-
+        LocalDateTime tiempo = LocalDateTime.of(fecha, horaInicio);
+        LocalDateTime tiempo2 = LocalDateTime.of(otro.getFecha(), otro.getHoraInicio());
+        return tiempo.isBefore(tiempo2);
     }
-
   
     /**
      * representación textual del evento  
