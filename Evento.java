@@ -25,9 +25,9 @@ public class Evento {
     public Evento(String nombre, String fecha, String horaInicio,
     String horaFin) {
          this.nombre = formatearNombre(nombre);
-         this.fecha = LocalDate.parse(fecha, formateadorFecha);
-         this.horaInicio = LocalTime.parse(horaInicio);
-         this.horaFin = LocalTime.parse(horaFin);
+         this.fecha = LocalDate.parse(fecha.trim(), formateadorFecha);
+         this.horaInicio = LocalTime.parse(horaInicio.trim());
+         this.horaFin = LocalTime.parse(horaFin.trim());
     }
     
     /**
@@ -131,7 +131,7 @@ public class Evento {
      */
     public Mes getMes() {
         Mes[] meses = Mes.values();
-        return meses[fecha.getMonthValue()];
+        return meses[fecha.getMonthValue() - 1];
     }
 
     /**
