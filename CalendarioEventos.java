@@ -109,9 +109,18 @@ public class CalendarioEventos {
      */
     public TreeSet<Mes> mesesConMasEventos() {
         Set<Mes> claves = calendario.keySet();
-        
-        
-        return null;
+        TreeSet<Mes> resul = new TreeSet<>();
+        int mayorNEventos = 0;
+        for(Mes mes : claves){
+            if(mayorNEventos < calendario.get(mes).size()){
+                mayorNEventos = calendario.get(mes).size();
+                resul = new TreeSet<>();
+                resul.add(mes);
+            }else if(mayorNEventos == calendario.get(mes).size()){
+                resul.add(mes);
+            }
+        }
+        return resul;
     }
 
     /**
@@ -144,6 +153,7 @@ public class CalendarioEventos {
      * completa del map
      */
     public int cancelarEventos(Mes[] meses, int dia) {
+        int eventosBorrados = 0;
         for(Mes mes: meses){
             if(calendario.containsKey(mes)){
                 ArrayList<Evento> eventos = calendario.get(mes);
@@ -152,6 +162,7 @@ public class CalendarioEventos {
                     Evento evento = it.next();
                     if(evento.getDia() == dia){
                         it.remove();
+                        eventosBorrados++;
                     }
                 }
                 if(eventos.size() == 0){
@@ -161,7 +172,7 @@ public class CalendarioEventos {
                 }
             }
         }
-        return meses.length;
+        return eventosBorrados;
     }
 
     /**
