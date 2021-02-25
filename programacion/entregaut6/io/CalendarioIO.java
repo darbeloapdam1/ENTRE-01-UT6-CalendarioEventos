@@ -1,6 +1,10 @@
+package programacion.entregaut6.io; 
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import programacion.entregaut6.modelo.Mes;
+import programacion.entregaut6.modelo.Evento;
+import programacion.entregaut6.modelo.CalendarioEventos;
 
 /**
  * La clase contiene un método estático que permite
